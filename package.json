@@ -1,0 +1,22 @@
+{
+  "main": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "bun ./src/server/app.ts",
+    "dev": "bun --hot ./src/server/app.ts",
+    "build:compile": "NODE_ENV=production bun build ./src/server/app.ts --outfile dist/server --compile",
+    "build:image": "docker build -t app .",
+    "build:production": "bun run build:compile && bun run build:image",
+    "up": "docker compose up -d",
+    "down": "docker compose down",
+    "serve": "bun run up -- -d --no-deps --build web",
+    "workspace:server": "rm -f app && ln -s src/server app",
+    "workspace:client": "rm -f app && ln -s src/client app",
+    "clean": "podman rmi --all --force && rm -f app"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,9 @@
+# Swap this out with what works for you
+jsx = "react"
+jsxImportSource = "react"
+
+# Other options:
+#   preload = ['./preload.js']
+#   jsxFactory = "h"
+#   jsxFragment = "Fragment"
+#   smol = true
