@@ -1,17 +1,24 @@
-export const jsx = (strings: TemplateStringsArray, ...args: any[]) => {
+export const jsx = async (strings: TemplateStringsArray, ...args: any[]) => {
   const result = [];
 
   for (let i = 0; i <= strings.length; i++) {
     if (strings[i]) result.push(strings[i]);
-    if (args[i]) result.push(args[i]);
+    if (args[i]) {
+      result.push(
+        typeof args[i] === "function" ? await args[i]() : await args[i],
+      );
+    }
   }
 
   return result.join("").split("\\n").join("\n").trim();
 };
 
 export const defineComponent =
-  (render: Function) =>
-  (props: Props | string = {}, content: string | undefined = undefined) => {
+  (render: RenderFunction) =>
+  async (
+    props: Props | string = {},
+    content: Component | string | undefined = undefined,
+  ): Promise<Component | string> => {
     if (typeof props === "string") {
       content = props;
       props = { children: null };
@@ -23,5 +30,13 @@ export const defineComponent =
 
     props.children = content;
 
-    return render(props);
+    return await render(props);
   };
+
+export const view = async (path: string, props: Props = {}) => {
+  const dat = await import(path, {
+    with: { type: "text" },
+  });
+  const func = eval(`defineComponent(async (props) => jsx\`${dat.default}\`)`);
+  return func(props);
+};

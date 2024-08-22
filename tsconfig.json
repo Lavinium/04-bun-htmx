@@ -25,10 +25,6 @@
 
     // Swap this out with what works for you
     "jsx": "react-jsx",
-    "jsxImportSource": "react",
-
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "jsxImportSource": "react"
   }
 }
